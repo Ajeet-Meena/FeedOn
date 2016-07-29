@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">BBC Feeds</string>
+    <string name="app_name">NewsOn</string>
+    <string name="openDrawer">Open Drawer</string>
+    <string name="closeDrawer">Close Drawer</string>
 </resources>
