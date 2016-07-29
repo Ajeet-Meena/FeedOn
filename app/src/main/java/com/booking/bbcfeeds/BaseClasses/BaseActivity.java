@@ -1,4 +1,4 @@
-package com.booking.BaseClasses;
+package com.booking.bbcfeeds.BaseClasses;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ajeet_meena.movieon.R;
-import com.ajeet_meena.movieon.Utils.Montserrat;
+import com.booking.bbcfeeds.R;
+import com.booking.bbcfeeds.Utils.Montserrat;
 
 
 /**
