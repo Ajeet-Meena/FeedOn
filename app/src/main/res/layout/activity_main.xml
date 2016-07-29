@@ -3,14 +3,15 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:descendantFocusability="beforeDescendants"
+    android:background="@color/white"
     android:focusableInTouchMode="true">
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
 
         <android.support.design.widget.AppBarLayout
@@ -23,8 +24,8 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
-                android:background="@drawable/gradien_drawable"
-                app:layout_scrollFlags="scroll|enterAlways" />
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:background="@drawable/gradien_drawable"/>
 
 
             <android.support.v7.widget.Toolbar
@@ -40,55 +41,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_marginRight="16dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_marginRight="16dp" />
+                    />
 
             </android.support.v7.widget.Toolbar>
-
-            <FrameLayout
-                android:id="@+id/search_view_holder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
-                android:layout_marginRight="12dp"
-                android:layout_marginBottom="12dp"
-
-                >
-
-
-                <com.smartprix.assignment.Views.MontserratEditText
-                    android:id="@+id/search"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@color/white"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:gravity="center_vertical"
-                    android:hint="Search and Add"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingTop="10dp"
-                    android:textColor="@color/primary_text_color"
-                    android:textColorHint="@color/manatee" />
-
-
-                <ProgressBar
-                    android:id="@+id/progress_bar"
-                    style="?android:attr/android:progressBarStyleSmall"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginRight="12dp"
-                    android:gravity="center" />
-
-
-            </FrameLayout>
-
 
         </android.support.design.widget.AppBarLayout>
 
@@ -113,7 +70,7 @@
         app:itemTextColor="@color/primary_text_color"
         app:menu="@menu/drawer">
 
-        <com.smartprix.assignment.Views.MontserratTextView
+        <com.ajeet_meena.movieon.Views.MontserratTextView
             android:id="@+id/terms_of_use"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
