@@ -1,0 +1,25 @@
+<resources>
+    <!-- used to set the minTextSize via xml -->
+    <attr name="autoScaleTextViewStyle" format="reference" />
+    <declare-styleable name="AutoScaleTextView">
+        <attr name="minTextSize" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="TypefaceTextView">
+        <attr name="font_family" format="enum">
+            <enum name="regular" value="0" />
+            <enum name="medium" value="1" />
+            <enum name="bold" value="2" />
+            <enum name="thin" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MontserratTextView">
+        <attr name="typeface" format="enum">
+            <enum name="montserratLight" value="0" />
+            <enum name="montserratRegular" value="1" />
+            <enum name="montserratSemiBold" value="2" />
+            <enum name="montserratUltraLight" value="3" />
+            <enum name="montserratBold" value="4" />
+        </attr>
+    </declare-styleable>
+</resources>
