@@ -38,7 +38,6 @@ public class MainActivity extends BaseActivity implements
     private AppBarLayout appBarLayout;
     private boolean doubleBackToExitPressedOnce = false;
     private ImageView toolbarActionImageView;
-    private ProgressBar progressBar;
 
 
     private void attachItemsFragment() {
@@ -63,8 +62,6 @@ public class MainActivity extends BaseActivity implements
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar_layout);
         toolbarActionImageView = (ImageView) findViewById(R.id.toolbar_action);
-        progressBar = (ProgressBar) findViewById(R.id.progress_bar);
-        progressBar.setVisibility(View.GONE);
     }
 
     private void attachSearchResultFragment() {
