@@ -197,10 +197,6 @@ public class MainActivity extends BaseActivity implements
         fragmentTransaction.commit();
     }
 
-    public void attachEditNoteFragment() {
-
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (actionBarDrawerToggle.isDrawerIndicatorEnabled() &&

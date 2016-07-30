@@ -27,7 +27,6 @@ import com.booking.bbcfeeds.Helpers.JsoupHelper;
 import com.booking.bbcfeeds.Listeners.AppBarObserver;
 import com.booking.bbcfeeds.Models.RSSFeed;
 import com.booking.bbcfeeds.Models.WebSite;
-import com.booking.bbcfeeds.MyApplication;
 import com.booking.bbcfeeds.R;
 import com.booking.bbcfeeds.RSSParser;
 
@@ -56,7 +55,7 @@ public class HomeFragment extends Fragment implements AppBarObserver.OnOffsetCha
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_home, container, false);
+            rootView = inflater.inflate(R.layout.fragment_my_feed, container, false);
             initVariables();
             initView();
             setupRecyclerView();
