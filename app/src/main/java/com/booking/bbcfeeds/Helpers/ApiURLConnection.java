@@ -30,8 +30,8 @@ import java.util.Map;
 
 public class ApiURLConnection {
 
-    public static int GET_REQUEST = 0;
-    public static int POST_REQUEST = 1;
+    public static final int GET_REQUEST = 0;
+    public static final int POST_REQUEST = 1;
 
     private static OnRequestCompleteListener onRequestCompleteListener;
     private static Boolean hasListener = false;
