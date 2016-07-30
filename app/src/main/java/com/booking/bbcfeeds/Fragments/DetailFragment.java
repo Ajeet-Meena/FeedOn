@@ -11,7 +11,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
+import com.booking.bbcfeeds.Database.RSSDatabaseHelper;
 import com.booking.bbcfeeds.Listeners.AppBarObserver;
+import com.booking.bbcfeeds.Models.WebSite;
 
 
 /**
@@ -20,10 +22,20 @@ import com.booking.bbcfeeds.Listeners.AppBarObserver;
 
 public class DetailFragment extends Fragment implements AppBarObserver.OnOffsetChangeListener {
 
-    public static final String TAG = "DetailFragment";
+    public static final String TAG = DetailFragment.class.getName();
+    public static final String EXTRA_ID = "extra_id";
     private View rootView;
+    private WebSite webSite;
 
     public DetailFragment() {
+    }
+
+    public static DetailFragment getInstance(int id) {
+        DetailFragment detailFragment = new DetailFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(EXTRA_ID, id);
+        detailFragment.setArguments(bundle);
+        return detailFragment;
     }
 
     @Override
@@ -38,7 +50,7 @@ public class DetailFragment extends Fragment implements AppBarObserver.OnOffsetC
     }
 
     private void initView() {
-
+        ((MainActivity) getActivity()).getToolbar().setTitle(webSite.getTitle());
     }
 
     @Override
@@ -46,7 +58,7 @@ public class DetailFragment extends Fragment implements AppBarObserver.OnOffsetC
     }
 
     private void initVariables() {
-
+        this.webSite = new RSSDatabaseHelper(getActivity()).getSite(getArguments().getInt(EXTRA_ID));
     }
 
     @Override
@@ -55,7 +67,7 @@ public class DetailFragment extends Fragment implements AppBarObserver.OnOffsetC
         initVariables();
         ((MainActivity) getActivity()).getToolbarActionImageView().setVisibility(View.GONE);
         ((MainActivity) getActivity()).getToolbarActionImageView().setOnClickListener(null);
-        ((MainActivity) getActivity()).getToolbar().setTitle("My Notes");
+        ((MainActivity) getActivity()).getToolbar().setTitle(webSite.getTitle());
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(((BaseActivity) getActivity()).getContentView().getWindowToken(), 0);
     }
