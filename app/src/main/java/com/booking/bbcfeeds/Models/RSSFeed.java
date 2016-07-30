@@ -12,15 +12,17 @@ public class RSSFeed {
     private String link;
     private String rssLink;
     private String language;
+    private String webSiteLogo;
     private ArrayList<RSSItem> rssItems;
 
-    public RSSFeed(String title, String description, String link, String rssLink, String language, ArrayList<RSSItem> rssItems) {
+    public RSSFeed(String title, String description, String link, String rssLink, String language, String webSiteLogo,ArrayList<RSSItem> rssItems) {
         this.title = title;
         this.description = description;
         this.link = link;
         this.rssLink = rssLink;
         this.language = language;
         this.rssItems = rssItems;
+        this.webSiteLogo = webSiteLogo;
     }
 
     public RSSFeed(String title, String description, String link, String rssLink, String language) {
@@ -60,7 +62,7 @@ public class RSSFeed {
     }
 
     public void setRssLink(String rssLink) {
-        this.rssLink = rssLink;
+        this.rssLink                              = rssLink;
     }
 
     public String getLanguage() {
@@ -77,5 +79,23 @@ public class RSSFeed {
 
     public void setRssItems(ArrayList<RSSItem> rssItems) {
         this.rssItems = rssItems;
+    }
+
+    public String getWebSiteLogo() {
+        return webSiteLogo;
+    }
+
+    public void setWebSiteLogo(String webSiteLogo) {
+        this.webSiteLogo = webSiteLogo;
+    }
+
+    public WebSite getWebSite(){
+        WebSite webSite = new WebSite();
+        webSite.setTitle(this.title);
+        webSite.setDescription(this.description);
+        webSite.setLink(this.link);
+        webSite.setRSSLink(this.rssLink);
+        webSite.setWebSiteLogo(this.webSiteLogo);
+        return webSite;
     }
 }

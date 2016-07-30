@@ -6,17 +6,30 @@ package com.booking.bbcfeeds.Models;
 
 public class WebSite {
     private int id;
-    private int title;
+    private String title;
     private String link;
     private String rssLink;
     private String description;
+    private String webSiteLogo;
 
-    public WebSite(int id, int title, String link, String rssLink, String description) {
+    public WebSite() {
+    }
+
+    public WebSite(int id, String title, String link, String rssLink, String description) {
         this.id = id;
         this.title = title;
         this.link = link;
         this.rssLink = rssLink;
         this.description = description;
+    }
+
+    public WebSite(int id, String title, String link, String rssLink, String description, String webSiteLogo) {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.rssLink = rssLink;
+        this.description = description;
+        this.webSiteLogo = webSiteLogo;
     }
 
     public int getId() {
@@ -27,11 +40,11 @@ public class WebSite {
         this.id = id;
     }
 
-    public int getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(int title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
@@ -43,11 +56,11 @@ public class WebSite {
         this.link = link;
     }
 
-    public String getRssLink() {
+    public String getRSSLink() {
         return rssLink;
     }
 
-    public void setRssLink(String rssLink) {
+    public void setRSSLink(String rssLink) {
         this.rssLink = rssLink;
     }
 
@@ -57,5 +70,13 @@ public class WebSite {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getWebSiteLogo() {
+        return webSiteLogo;
+    }
+
+    public void setWebSiteLogo(String webSiteLogo) {
+        this.webSiteLogo = webSiteLogo;
     }
 }
