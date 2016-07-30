@@ -1,6 +1,13 @@
 package com.booking.bbcfeeds.Helpers;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.ContextWrapper;
+
+import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
@@ -8,15 +15,25 @@ import java.io.IOException;
  * Created by Ajeet Kumar Meena on 29-07-2016.
  */
 
-public class JsoupHelper {
+public class JsoupHelper extends ContextWrapper{
 
-    private OnOperationComplete onOperationComplete;
+    MaterialDialog progressDialog;
 
-    public JsoupHelper(OnOperationComplete onOperationComplete) {
-        this.onOperationComplete = onOperationComplete;
+    public JsoupHelper(Context context) {
+        super(context);
+        ((Activity)getBaseContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog = new MaterialDialog.Builder(getBaseContext())
+                        .content("please wait...")
+                        .progress(true, 0)
+                        .progressIndeterminateStyle(false).build();
+            }
+        });
     }
 
-    public void getRSSLinkFromURL(final String url) {
+    public void getRSSLinkFromWebSiteURL(final String url, final OnOperationComplete onOperationComplete) {
+        progressDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -25,24 +42,59 @@ public class JsoupHelper {
                     org.jsoup.select.Elements links = doc
                             .select("link[type=application/rss+xml]");
                     if (links.size() > 0) {
+                        closeDialog();
                         onOperationComplete.onOperationComplete(links.get(0).attr("href"));
                     } else {
                         org.jsoup.select.Elements links1 = doc
                                 .select("link[type=application/atom+xml]");
                         if (links1.size() > 0) {
+                            closeDialog();
                             onOperationComplete.onOperationComplete(links1.get(0).attr("href"));
+                        } else {
+                            closeDialog();
+                            onOperationComplete.onOperationComplete(null);
                         }
                     }
 
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
+                    closeDialog();
                     onOperationComplete.onOperationComplete(null);
                 }
             }
         }).start();
     }
 
+    private void closeDialog(){
+        ((Activity)getBaseContext()).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog.dismiss();
+            }
+        });
+    }
     public interface OnOperationComplete {
         void onOperationComplete(String result);
+    }
+
+    public interface OnDocumentFetchComplete {
+        void onDocumentFetchComplete(Document document);
+    }
+
+    public void getDocument(final String url, final OnDocumentFetchComplete onDocumentFetchComplete){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Document document = Jsoup.connect(url).get();
+                    onDocumentFetchComplete.onDocumentFetchComplete(document);
+                    closeDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    onDocumentFetchComplete.onDocumentFetchComplete(null);
+                    closeDialog();
+                }
+            }
+        }).start();
     }
 }

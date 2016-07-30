@@ -36,51 +36,33 @@ public class RSSParser extends ContextWrapper {
     private static String TAG_ITEM = "item";
     private static String TAG_PUB_DATE = "pubDate";
     private static String TAG_GUID = "guid";
+    private static String TAG_WEBSITE_LOGO = "url";
 
     public RSSParser(Context context) {
         super(context);
     }
 
-    public void getRSSFeed(String url, final OnRSSFetchComplete onRSSFetchComplete) {
-        JsoupHelper jsoupHelper = new JsoupHelper(new JsoupHelper.OnOperationComplete() {
-            @Override
-            public void onOperationComplete(String result) {
-                if (result == null) {
-                    onRSSFetchComplete.onRSSFetchComplete(null);
-                } else {
-                    getRSSFeedFromRSSLink(result, onRSSFetchComplete);
-                }
-            }
-        });
-    }
-
     public void getRSSFeedFromRSSLink(final String rssLink, final OnRSSFetchComplete onRSSFetchComplete) {
-        ApiURLConnection.HttpRequester httpRequester = new ApiURLConnection.HttpRequester(getBaseContext(), 0, rssLink,
-                null, true);
-        httpRequester.registerOnRequestCompleteListener(new ApiURLConnection.OnRequestCompleteListener() {
-            @Override
-            public void onComplete(Boolean success, int requestCode, String URL, String result) {
-                if (success && result != null) {
-                    try {
-                        Document document = Jsoup.parse(result);
-                        Elements elements = document.getElementsByTag(TAG_CHANNEL);
-                        Element element = elements.get(0);
-                        String title = getValue(element, TAG_TITLE);
-                        String link = getValue(element, TAG_LINK);
-                        String description = getValue(element, TAG_DESRIPTION);
-                        String language = getValue(element, TAG_LANGUAGE);
-                        new RSSFeed(title, description, link, rssLink, language, getRSSFeedItems(document));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        onRSSFetchComplete.onRSSFetchComplete(null);
+        new JsoupHelper(getBaseContext())
+                .getDocument(rssLink, new JsoupHelper.OnDocumentFetchComplete() {
+                    @Override
+                    public void onDocumentFetchComplete(Document document) {
+                        if(document == null) {
+                            onRSSFetchComplete.onRSSFetchComplete(null);
+                        }else {
+                            Elements elements = document.getElementsByTag(TAG_CHANNEL);
+                            Element element = elements.get(0);
+                            String title = getValue(element, TAG_TITLE);
+                            String link = getValue(element, TAG_LINK);
+                            String description = getValue(element, TAG_DESRIPTION);
+                            String language = getValue(element, TAG_LANGUAGE);
+                            String webSiteLogo = getValue(element, TAG_WEBSITE_LOGO);
+                            RSSFeed rssFeed = new RSSFeed(title, description, link, rssLink, language,webSiteLogo, getRSSFeedItems(document));
+                            onRSSFetchComplete.onRSSFetchComplete(rssFeed);
+                        }
                     }
-                } else {
-                    onRSSFetchComplete.onRSSFetchComplete(null);
-                }
-            }
+                });
 
-        });
-        httpRequester.execute();
     }
 
     public ArrayList<RSSItem> getRSSFeedItems(Document document) {
