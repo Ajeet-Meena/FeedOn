@@ -44,7 +44,7 @@ public abstract class BaseRecyclerAdapter extends RecyclerView.Adapter {
         Log.d("Test OnCreateViewHolder", String.valueOf(adapterCurrentPosition));
         if (viewType == RECYCLER_ADAPTER_ITEM) {
 
-            View itemView = LayoutInflater.from(MyApplication.getInstance()).inflate(getItemLayoutId(), parent, false);
+            View itemView = LayoutInflater.from(mContext).inflate(getItemLayoutId(), parent, false);
             return getItemHolder(itemView);
 
 
