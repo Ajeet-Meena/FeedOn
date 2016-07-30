@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
+import com.booking.bbcfeeds.Fragments.DetailFragment;
 import com.booking.bbcfeeds.Fragments.HomeFragment;
 import com.booking.bbcfeeds.Listeners.OnFragmentInteractionListener;
 import com.booking.bbcfeeds.Models.RSSFeed;
@@ -34,6 +35,8 @@ public class MainActivity extends BaseActivity implements
         OnFragmentInteractionListener,
         FragmentManager.OnBackStackChangedListener {
 
+    public static final String EXTRA_ATTACH_FRAGMENT_NO = "extra_attach_fragment_no";
+    public static final int EXTRA_DETTAIL_FRAGMENT = 2;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -46,7 +49,7 @@ public class MainActivity extends BaseActivity implements
     private void attachHomeFragment() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame, new HomeFragment(), HomeFragment.TAG);
-        fragmentTransaction.addToBackStack(HomeFragment.TAG);
+        //fragmentTransaction.addToBackStack(HomeFragment.TAG);
         fragmentTransaction.commit();
     }
 
@@ -61,13 +64,13 @@ public class MainActivity extends BaseActivity implements
         initViews();
         setupNavigationDrawer();
         attachHomeFragment();
-        RSSParser rssParser = new RSSParser(this);
+      /*  RSSParser rssParser = new RSSParser(this);
         rssParser.getRSSFeedFromRSSLink("http://feeds.bbci.co.uk/news/rss.xml", new RSSParser.OnRSSFetchComplete() {
             @Override
             public void onRSSFetchComplete(RSSFeed rssFeed) {
 
             }
-        });
+        });*/
     }
 
     private void initViews() {
@@ -179,6 +182,19 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        int id = intent.getIntExtra(EXTRA_ATTACH_FRAGMENT_NO,0);
+        switch (id){
+            case EXTRA_DETTAIL_FRAGMENT:{
+                attachDetailFragment(intent.getIntExtra(DetailFragment.EXTRA_ID,-1));
+            }
+        }
+    }
+
+    private void attachDetailFragment(int id){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.add(R.id.frame, DetailFragment.getInstance(id),DetailFragment.TAG);
+        fragmentTransaction.addToBackStack(DetailFragment.TAG);
+        fragmentTransaction.commit();
     }
 
     public void attachEditNoteFragment() {
