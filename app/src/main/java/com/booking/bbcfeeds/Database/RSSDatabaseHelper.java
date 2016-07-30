@@ -21,6 +21,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
     private static final String KEY_LINK = "link";
     private static final String KEY_RSS_LINK = "rss_link";
     private static final String KEY_DESCRIPTION = "description";
+    private static final String KEY_IMAGE_URL = "image_url";
  
     public RSSDatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -30,7 +31,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_RSS_TABLE = "CREATE TABLE " + TABLE_RSS + "(" + KEY_ID
                 + " INTEGER PRIMARY KEY," + KEY_TITLE + " TEXT," + KEY_LINK
-                + " TEXT," + KEY_RSS_LINK + " TEXT," + KEY_DESCRIPTION
+                + " TEXT," + KEY_RSS_LINK + " TEXT,"  + KEY_IMAGE_URL + " TEXT," + KEY_DESCRIPTION
                 + " TEXT" + ")";
         db.execSQL(CREATE_RSS_TABLE);
     }
@@ -49,6 +50,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_LINK, site.getLink()); // site url
         values.put(KEY_RSS_LINK, site.getRSSLink()); // rss link url
         values.put(KEY_DESCRIPTION, site.getDescription()); // site description
+        values.put(KEY_IMAGE_URL,site.getWebSiteLogo());
  
         // Check if row already existed in database
         if (!isSiteExists(db, site.getRSSLink())) {
@@ -72,11 +74,12 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 WebSite site = new WebSite();
-                site.setId(Integer.parseInt(cursor.getString(0)));
-                site.setTitle(cursor.getString(1));
-                site.setLink(cursor.getString(2));
-                site.setRSSLink(cursor.getString(3));
-                site.setDescription(cursor.getString(4));
+                site.setId(Integer.parseInt(cursor.getString(cursor.getColumnIndex(KEY_ID))));
+                site.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TITLE)));
+                site.setLink(cursor.getString(cursor.getColumnIndex(KEY_LINK)));
+                site.setRSSLink(cursor.getString(cursor.getColumnIndex(KEY_RSS_LINK)));
+                site.setDescription(cursor.getString(cursor.getColumnIndex(KEY_DESCRIPTION)));
+                site.setWebSiteLogo(cursor.getString(cursor.getColumnIndex(KEY_IMAGE_URL)));
                 siteList.add(site);
             } while (cursor.moveToNext());
         }
@@ -93,6 +96,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
         values.put(KEY_LINK, site.getLink());
         values.put(KEY_RSS_LINK, site.getRSSLink());
         values.put(KEY_DESCRIPTION, site.getDescription());
+        values.put(KEY_IMAGE_URL,site.getWebSiteLogo());
  
         // updating row return
         int update = db.update(TABLE_RSS, values, KEY_RSS_LINK + " = ?",
@@ -106,7 +110,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
  
         Cursor cursor = db.query(TABLE_RSS, new String[] { KEY_ID, KEY_TITLE,
-                KEY_LINK, KEY_RSS_LINK, KEY_DESCRIPTION }, KEY_ID + "=?",
+                KEY_LINK, KEY_RSS_LINK, KEY_DESCRIPTION, KEY_IMAGE_URL }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         if (cursor != null)
             cursor.moveToFirst();
@@ -119,6 +123,7 @@ public class RSSDatabaseHelper extends SQLiteOpenHelper {
         site.setLink(cursor.getString(2));
         site.setRSSLink(cursor.getString(3));
         site.setDescription(cursor.getString(4));
+        site.setWebSiteLogo(cursor.getString(5));
         cursor.close();
         db.close();
         return site;
