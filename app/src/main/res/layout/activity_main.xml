@@ -70,7 +70,7 @@
         app:itemTextColor="@color/primary_text_color"
         app:menu="@menu/drawer">
 
-        <com.ajeet_meena.movieon.Views.MontserratTextView
+        <com.booking.bbcfeeds.Views.MontserratTextView
             android:id="@+id/terms_of_use"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

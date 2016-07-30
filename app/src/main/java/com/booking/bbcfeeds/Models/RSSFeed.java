@@ -23,6 +23,14 @@ public class RSSFeed {
         this.rssItems = rssItems;
     }
 
+    public RSSFeed(String title, String description, String link, String rssLink, String language) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.rssLink = rssLink;
+        this.language = language;
+    }
+
     public String getTitle() {
         return title;
     }
