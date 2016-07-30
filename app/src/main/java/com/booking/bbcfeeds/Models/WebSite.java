@@ -4,14 +4,14 @@ package com.booking.bbcfeeds.Models;
  * Created by Ajeet Kumar Meena on 29-07-2016.
  */
 
-public class RSSProvider {
+public class WebSite {
     private int id;
     private int title;
     private String link;
     private String rssLink;
     private String description;
 
-    public RSSProvider(int id, int title, String link, String rssLink, String description) {
+    public WebSite(int id, int title, String link, String rssLink, String description) {
         this.id = id;
         this.title = title;
         this.link = link;

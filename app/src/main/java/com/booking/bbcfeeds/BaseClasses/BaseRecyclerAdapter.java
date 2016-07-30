@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ajeet_meena.movieon.MyApplication;
+import com.booking.bbcfeeds.MyApplication;
 
 
 /**

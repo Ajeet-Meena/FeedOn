@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.os.Bundle;
@@ -15,12 +16,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
+import com.booking.bbcfeeds.Fragments.HomeFragment;
 import com.booking.bbcfeeds.Listeners.OnFragmentInteractionListener;
+import com.booking.bbcfeeds.Models.RSSFeed;
 import com.booking.bbcfeeds.R;
+import com.booking.bbcfeeds.RSSParser;
 
 /**
  * Created by Ajeet Kumar Meena on 18-06-2016.
@@ -40,21 +43,31 @@ public class MainActivity extends BaseActivity implements
     private ImageView toolbarActionImageView;
 
 
-    private void attachItemsFragment() {
-
+    private void attachHomeFragment() {
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame, new HomeFragment(), HomeFragment.TAG);
+        fragmentTransaction.addToBackStack(HomeFragment.TAG);
+        fragmentTransaction.commit();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        super.handleDrawerPress();
+        super.setStatusBarTranslucent(true);
         fragmentManager = getSupportFragmentManager();
-        setTitle("My Notes");
-        shouldHandleDrawer();
+        setTitle("My Feeds");
         initViews();
         setupNavigationDrawer();
-        setStatusBarTranslucent(true);
-        attachItemsFragment();
+        attachHomeFragment();
+        RSSParser rssParser = new RSSParser(this);
+        rssParser.getRSSFeedFromRSSLink("http://feeds.bbci.co.uk/news/rss.xml", new RSSParser.OnRSSFetchComplete() {
+            @Override
+            public void onRSSFetchComplete(RSSFeed rssFeed) {
+
+            }
+        });
     }
 
     private void initViews() {
@@ -64,8 +77,6 @@ public class MainActivity extends BaseActivity implements
         toolbarActionImageView = (ImageView) findViewById(R.id.toolbar_action);
     }
 
-    private void attachSearchResultFragment() {
-    }
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -85,7 +96,6 @@ public class MainActivity extends BaseActivity implements
     public void setToolbarActionImageView(ImageView toolbarActionImageView) {
         this.toolbarActionImageView = toolbarActionImageView;
     }
-
 
 
     private void setupNavigationDrawer() {

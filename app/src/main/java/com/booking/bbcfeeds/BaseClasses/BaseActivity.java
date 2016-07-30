@@ -124,7 +124,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void shouldHandleDrawer() {
+    public void handleDrawerPress() {
         this.shouldHandleDrawer = true;
     }
 
