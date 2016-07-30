@@ -1,26 +1,41 @@
 package com.booking.bbcfeeds.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.BaseClasses.BaseRecyclerAdapter;
+import com.booking.bbcfeeds.Database.RSSDatabaseHelper;
+import com.booking.bbcfeeds.Fragments.DetailFragment;
 import com.booking.bbcfeeds.Models.WebSite;
 import com.booking.bbcfeeds.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 /**
  * Created by Ajeet Kumar Meena on 10-06-2016.
  */
-public class NotesRecyclerAdapter extends BaseRecyclerAdapter {
+public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
 
     private ArrayList<WebSite> webSites = new ArrayList<>();
+    private RSSDatabaseHelper databaseHelper;
 
-    public NotesRecyclerAdapter(Context context, ArrayList<WebSite> webSites) {
+    public WebSiteRecyclerAdapter(Context context, ArrayList<WebSite> webSites) {
         super(context);
+        this.webSites = webSites;
+        this.databaseHelper = new RSSDatabaseHelper(context);
+    }
+
+    public ArrayList<WebSite> getWebSites() {
+        return webSites;
+    }
+
+    public void setWebSites(ArrayList<WebSite> webSites) {
         this.webSites = webSites;
     }
 
@@ -46,13 +61,14 @@ public class NotesRecyclerAdapter extends BaseRecyclerAdapter {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* mContext.startActivity(new Intent(mContext, MainActivity.class).putExtra(EditFragment.EXTRA_NOTE_ID, webSites.get(holder.getAdapterPosition()).getId())
-                        .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, 2));*/
+                mContext.startActivity(new Intent(mContext, MainActivity.class).putExtra(DetailFragment.EXTRA_ID, webSites.get(holder.getAdapterPosition()).getId())
+                        .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, MainActivity.EXTRA_DETTAIL_FRAGMENT));
             }
         });
         itemViewHolder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                databaseHelper.deleteSite(webSites.get(holder.getAdapterPosition()));
                 webSites.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
                 Toast.makeText(mContext, "Successfully Deleted", Toast.LENGTH_SHORT).show();
@@ -92,19 +108,23 @@ public class NotesRecyclerAdapter extends BaseRecyclerAdapter {
 
     private class ItemViewHolder extends ItemHolder {
 
-        private TextView title, notesTextView;
-        private ImageView delete;
+        private TextView title, notesTextView, webSiteLink;
+        private ImageView delete, websiteLogo;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             notesTextView = (TextView) itemView.findViewById(R.id.note);
             delete = (ImageView) itemView.findViewById(R.id.delete);
+            websiteLogo = (ImageView) itemView.findViewById(R.id.website_logo);
+            webSiteLink = (TextView) itemView.findViewById(R.id.website_link);
         }
 
         public void setViews(WebSite webSite) {
             title.setText(webSite.getTitle());
             notesTextView.setText(webSite.getDescription());
+            webSiteLink.setText(webSite.getLink());
+            Picasso.with(mContext).load(webSite.getWebSiteLogo()).into(websiteLogo);
         }
     }
 }
