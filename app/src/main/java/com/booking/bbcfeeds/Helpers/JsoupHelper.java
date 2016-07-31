@@ -18,7 +18,6 @@ import java.io.IOException;
 public class JsoupHelper extends ContextWrapper{
 
     MaterialDialog progressDialog;
-
     public JsoupHelper(Context context) {
         super(context);
         ((Activity)getBaseContext()).runOnUiThread(new Runnable() {
@@ -38,7 +37,8 @@ public class JsoupHelper extends ContextWrapper{
             @Override
             public void run() {
                 try {
-                    org.jsoup.nodes.Document doc = Jsoup.connect(url).get();
+                    String documentString = new ApiURLConnection().httpGet(url,null);
+                    org.jsoup.nodes.Document doc = Jsoup.parse(documentString);
                     org.jsoup.select.Elements links = doc
                             .select("link[type=application/rss+xml]");
                     if (links.size() > 0) {
@@ -86,7 +86,8 @@ public class JsoupHelper extends ContextWrapper{
             @Override
             public void run() {
                 try {
-                    Document document = Jsoup.connect(url).get();
+                   String documentString =  new ApiURLConnection().httpGet(url,null);
+                    Document document = Jsoup.parse(documentString);
                     onDocumentFetchComplete.onDocumentFetchComplete(document);
                     closeDialog();
                 } catch (Exception e) {
