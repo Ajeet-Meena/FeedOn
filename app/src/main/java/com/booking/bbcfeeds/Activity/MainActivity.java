@@ -19,12 +19,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
-import com.booking.bbcfeeds.Fragments.DetailFragment;
-import com.booking.bbcfeeds.Fragments.HomeFragment;
+import com.booking.bbcfeeds.Fragments.FeedListFragment;
+import com.booking.bbcfeeds.Fragments.MyFeedFragment;
 import com.booking.bbcfeeds.Listeners.OnFragmentInteractionListener;
-import com.booking.bbcfeeds.Models.RSSFeed;
 import com.booking.bbcfeeds.R;
-import com.booking.bbcfeeds.RSSParser;
 
 /**
  * Created by Ajeet Kumar Meena on 18-06-2016.
@@ -48,8 +46,8 @@ public class MainActivity extends BaseActivity implements
 
     private void attachHomeFragment() {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame, new HomeFragment(), HomeFragment.TAG);
-        //fragmentTransaction.addToBackStack(HomeFragment.TAG);
+        fragmentTransaction.add(R.id.frame, new MyFeedFragment(), MyFeedFragment.TAG);
+        //fragmentTransaction.addToBackStack(MyFeedFragment.TAG);
         fragmentTransaction.commit();
     }
 
@@ -185,15 +183,15 @@ public class MainActivity extends BaseActivity implements
         int id = intent.getIntExtra(EXTRA_ATTACH_FRAGMENT_NO,0);
         switch (id){
             case EXTRA_DETTAIL_FRAGMENT:{
-                attachDetailFragment(intent.getIntExtra(DetailFragment.EXTRA_ID,-1));
+                attachDetailFragment(intent.getIntExtra(FeedListFragment.EXTRA_ID,-1));
             }
         }
     }
 
     private void attachDetailFragment(int id){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frame, DetailFragment.getInstance(id),DetailFragment.TAG);
-        fragmentTransaction.addToBackStack(DetailFragment.TAG);
+        fragmentTransaction.add(R.id.frame, FeedListFragment.getInstance(id), FeedListFragment.TAG);
+        fragmentTransaction.addToBackStack(FeedListFragment.TAG);
         fragmentTransaction.commit();
     }
 

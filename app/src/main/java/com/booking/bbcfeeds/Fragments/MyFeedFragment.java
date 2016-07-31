@@ -36,9 +36,9 @@ import java.util.ArrayList;
  * Created by Ajeet Kumar Meena on 10-06-2016.
  */
 
-public class HomeFragment extends Fragment implements AppBarObserver.OnOffsetChangeListener {
+public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetChangeListener {
 
-    public static final String TAG = HomeFragment.class.getSimpleName();
+    public static final String TAG = MyFeedFragment.class.getSimpleName();
     private View rootView;
     private RecyclerView recyclerView;
     private WebSiteRecyclerAdapter webSiteRecyclerAdapter;
@@ -48,7 +48,7 @@ public class HomeFragment extends Fragment implements AppBarObserver.OnOffsetCha
     private ArrayList<WebSite> webSites = new ArrayList<>();
     private RSSDatabaseHelper databaseHelper;
 
-    public HomeFragment() {
+    public MyFeedFragment() {
     }
 
     @Override
@@ -102,11 +102,9 @@ public class HomeFragment extends Fragment implements AppBarObserver.OnOffsetCha
                         if (editTextUrl.isFocused() && editTextUrl.getText().toString().isEmpty()) {
                             editTextUrl.setError("This field cannot be empty");
                             editTextRssLink.setError(null);
-                            return;
                         } else if (editTextRssLink.isFocused() && editTextRssLink.getText().toString().isEmpty()) {
                             editTextRssLink.setError("This field cannot be empty");
                             editTextUrl.setError(null);
-                            return;
                         } else {
                             String input;
                             if(editTextRssLink.isFocused()){

@@ -15,6 +15,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -47,9 +48,9 @@ public class RSSParser extends ContextWrapper {
                 .getDocument(rssLink, new JsoupHelper.OnDocumentFetchComplete() {
                     @Override
                     public void onDocumentFetchComplete(Document document) {
-                        if(document == null) {
+                        if (document == null) {
                             onRSSFetchComplete.onRSSFetchComplete(null);
-                        }else {
+                        } else {
                             Elements elements = document.getElementsByTag(TAG_CHANNEL);
                             Element element = elements.get(0);
                             String title = getValue(element, TAG_TITLE);
@@ -57,7 +58,7 @@ public class RSSParser extends ContextWrapper {
                             String description = getValue(element, TAG_DESRIPTION);
                             String language = getValue(element, TAG_LANGUAGE);
                             String webSiteLogo = getValue(element, TAG_WEBSITE_LOGO);
-                            RSSFeed rssFeed = new RSSFeed(title, description, link, rssLink, language,webSiteLogo, getRSSFeedItems(document));
+                            RSSFeed rssFeed = new RSSFeed(title, description, link, rssLink, language, webSiteLogo, getRSSFeedItems(document));
                             onRSSFetchComplete.onRSSFetchComplete(rssFeed);
                         }
                     }
@@ -68,11 +69,10 @@ public class RSSParser extends ContextWrapper {
     public ArrayList<RSSItem> getRSSFeedItems(Document document) {
         ArrayList<RSSItem> itemsList = new ArrayList<>();
         try {
-            Elements elements = document.getElementsByAttribute(TAG_CHANNEL);
-            Element element = elements.get(0);
-            Elements items = element.getElementsByAttribute(TAG_ITEM);
-            for (int i = 0; i < items.size(); i++) {
-                Element e1 = items.get(i);
+            Elements elements = document.getElementsByTag(TAG_ITEM);
+
+            for (int i = 0; i < elements.size(); i++) {
+                Element e1 = elements.get(i);
                 String title = this.getValue(e1, TAG_TITLE);
                 String link = this.getValue(e1, TAG_LINK);
                 String description = this.getValue(e1, TAG_DESRIPTION);
@@ -115,8 +115,13 @@ public class RSSParser extends ContextWrapper {
 
 
     public String getValue(Element item, String str) {
-        Elements elements = item.getElementsByTag(str);
-        return elements.get(0).text();
+        try {
+            Elements elements = item.getElementsByTag(str);
+            return elements.get(0).text();
+        }catch (Exception e){
+            e.printStackTrace();
+            return "";
+        }
     }
 
     public interface OnRSSFetchComplete {

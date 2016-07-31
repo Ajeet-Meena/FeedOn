@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.BaseClasses.BaseRecyclerAdapter;
 import com.booking.bbcfeeds.Database.RSSDatabaseHelper;
-import com.booking.bbcfeeds.Fragments.DetailFragment;
+import com.booking.bbcfeeds.Fragments.FeedListFragment;
 import com.booking.bbcfeeds.Models.WebSite;
 import com.booking.bbcfeeds.R;
 import com.squareup.picasso.Picasso;
@@ -61,7 +61,7 @@ public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mContext.startActivity(new Intent(mContext, MainActivity.class).putExtra(DetailFragment.EXTRA_ID, webSites.get(holder.getAdapterPosition()).getId())
+                mContext.startActivity(new Intent(mContext, MainActivity.class).putExtra(FeedListFragment.EXTRA_ID, webSites.get(holder.getAdapterPosition()).getId())
                         .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, MainActivity.EXTRA_DETTAIL_FRAGMENT));
             }
         });
@@ -124,7 +124,12 @@ public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
             title.setText(webSite.getTitle());
             notesTextView.setText(webSite.getDescription());
             webSiteLink.setText(webSite.getLink());
-            Picasso.with(mContext).load(webSite.getWebSiteLogo()).into(websiteLogo);
+            if (webSite.getWebSiteLogo() != null && !webSite.getWebSiteLogo().isEmpty()) {
+                websiteLogo.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(webSite.getWebSiteLogo()).into(websiteLogo);
+            } else {
+                websiteLogo.setVisibility(View.GONE);
+            }
         }
     }
 }
