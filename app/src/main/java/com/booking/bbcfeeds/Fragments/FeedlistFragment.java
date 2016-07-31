@@ -54,7 +54,7 @@ public class FeedListFragment extends Fragment implements AppBarObserver.OnOffse
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         if (rootView == null) {
-            rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+            rootView = inflater.inflate(R.layout.fragment_feed_list, container, false);
             initVariables();
             initView();
             setupRecyclerView();
