@@ -9,14 +9,14 @@
     android:paddingBottom="56dp"
     android:paddingLeft="32dp">
 
-     <com.booking.bbcfeeds.Views.MontserratTextView
+     <com.booking.feedon.Views.MontserratTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="NewsOn"
          android:textColor="@color/white"
         android:textSize="@dimen/text_medium2" />
 
-     <com.booking.bbcfeeds.Views.MontserratTextView
+     <com.booking.feedon.Views.MontserratTextView
         android:id="@+id/user_name_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

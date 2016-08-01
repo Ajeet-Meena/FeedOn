@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewsOn</string>
+    <string name="app_name">FeedOn</string>
     <string name="openDrawer">Open Drawer</string>
     <string name="closeDrawer">Close Drawer</string>
 
