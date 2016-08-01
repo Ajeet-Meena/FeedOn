@@ -58,7 +58,6 @@ public class MainActivity extends BaseActivity implements
         super.handleDrawerPress();
         super.setStatusBarTranslucent(true);
         fragmentManager = getSupportFragmentManager();
-        setTitle("My Feeds");
         initViews();
         setupNavigationDrawer();
         attachHomeFragment();
@@ -190,7 +189,7 @@ public class MainActivity extends BaseActivity implements
 
     private void attachDetailFragment(int id){
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.add(R.id.frame, FeedListFragment.getInstance(id), FeedListFragment.TAG);
+        fragmentTransaction.replace(R.id.frame, FeedListFragment.getInstance(id), FeedListFragment.TAG);
         fragmentTransaction.addToBackStack(FeedListFragment.TAG);
         fragmentTransaction.commit();
     }

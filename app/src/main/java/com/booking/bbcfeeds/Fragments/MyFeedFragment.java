@@ -223,5 +223,4 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(((BaseActivity) getActivity()).getContentView().getWindowToken(), 0);
     }
-
 }
