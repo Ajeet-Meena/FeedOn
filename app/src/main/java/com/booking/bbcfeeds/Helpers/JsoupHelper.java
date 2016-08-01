@@ -8,6 +8,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 
 import java.io.IOException;
 
@@ -27,18 +28,18 @@ public class JsoupHelper extends ContextWrapper{
                         .content("please wait...")
                         .progress(true, 0)
                         .progressIndeterminateStyle(false).build();
+                progressDialog.show();
             }
         });
     }
 
     public void getRSSLinkFromWebSiteURL(final String url, final OnOperationComplete onOperationComplete) {
-        progressDialog.show();
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     String documentString = new ApiURLConnection().httpGet(url,null);
-                    org.jsoup.nodes.Document doc = Jsoup.parse(documentString);
+                    org.jsoup.nodes.Document doc = Jsoup.parse(documentString,"",Parser.xmlParser());
                     org.jsoup.select.Elements links = doc
                             .select("link[type=application/rss+xml]");
                     if (links.size() > 0) {
@@ -87,7 +88,7 @@ public class JsoupHelper extends ContextWrapper{
             public void run() {
                 try {
                    String documentString =  new ApiURLConnection().httpGet(url,null);
-                    Document document = Jsoup.parse(documentString);
+                    Document document = Jsoup.parse(documentString,"", Parser.xmlParser());
                     onDocumentFetchComplete.onDocumentFetchComplete(document);
                     closeDialog();
                 } catch (Exception e) {
