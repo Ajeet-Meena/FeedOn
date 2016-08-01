@@ -111,21 +111,17 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
         private Target target = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                imageView.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        DisplayUtil.scaleImage(bitmap, imageView, mContext);
-                    }
-                });
+                DisplayUtil.scaleImage(bitmap, imageView, mContext);
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
+                imageView.setVisibility(View.GONE);
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
+                imageView.setImageDrawable(mContext.getResources().getDrawable(R.color.md_grey_400));
             }
         };
 
