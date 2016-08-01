@@ -1,10 +1,13 @@
 package com.booking.bbcfeeds.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Ajeet Kumar Meena on 29-07-2016.
  */
 
-public class RSSItem {
+public class RSSItem implements Parcelable{
     private String title;
     private String link;
     private String description;
@@ -18,6 +21,26 @@ public class RSSItem {
         this.pubDate = pubDate;
         this.guid = guid;
     }
+
+    protected RSSItem(Parcel in) {
+        title = in.readString();
+        link = in.readString();
+        description = in.readString();
+        pubDate = in.readString();
+        guid = in.readString();
+    }
+
+    public static final Creator<RSSItem> CREATOR = new Creator<RSSItem>() {
+        @Override
+        public RSSItem createFromParcel(Parcel in) {
+            return new RSSItem(in);
+        }
+
+        @Override
+        public RSSItem[] newArray(int size) {
+            return new RSSItem[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -57,5 +80,19 @@ public class RSSItem {
 
     public void setGuid(String guid) {
         this.guid = guid;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(title);
+        parcel.writeString(link);
+        parcel.writeString(description);
+        parcel.writeString(pubDate);
+        parcel.writeString(guid);
     }
 }

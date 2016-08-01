@@ -97,6 +97,7 @@ public class FeedListFragment extends Fragment implements AppBarObserver.OnOffse
         ((MainActivity) getActivity()).getToolbarActionImageView().setVisibility(View.GONE);
         ((MainActivity) getActivity()).getToolbarActionImageView().setOnClickListener(null);
         ((MainActivity) getActivity()).getToolbar().setTitle(webSite.getTitle());
+        ((MainActivity) getActivity()).getToolbar().setSubtitle(null);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(((BaseActivity) getActivity()).getContentView().getWindowToken(), 0);
     }

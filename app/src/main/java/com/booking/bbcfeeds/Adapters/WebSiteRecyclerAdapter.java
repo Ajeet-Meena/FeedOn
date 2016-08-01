@@ -2,6 +2,7 @@ package com.booking.bbcfeeds.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -62,7 +63,7 @@ public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
             @Override
             public void onClick(View v) {
                 mContext.startActivity(new Intent(mContext, MainActivity.class).putExtra(FeedListFragment.EXTRA_ID, webSites.get(holder.getAdapterPosition()).getId())
-                        .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, MainActivity.EXTRA_DETTAIL_FRAGMENT));
+                        .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, MainActivity.EXTRA_FEED_LIST_FRAGMENT));
             }
         });
         itemViewHolder.delete.setOnClickListener(new View.OnClickListener() {

@@ -1,6 +1,9 @@
 package com.booking.bbcfeeds.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -8,10 +11,14 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.BaseClasses.BaseRecyclerAdapter;
+import com.booking.bbcfeeds.Fragments.WebViewFragment;
 import com.booking.bbcfeeds.Models.RSSItem;
 import com.booking.bbcfeeds.R;
+import com.booking.bbcfeeds.Utils.DisplayUtil;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -60,6 +67,11 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mContext.startActivity(
+                        new Intent(mContext, MainActivity.class)
+                                .putExtra(WebViewFragment.EXTRA_RSS_ITEM, rssItems.get(holder.getAdapterPosition()))
+                                .putExtra(MainActivity.EXTRA_ATTACH_FRAGMENT_NO, MainActivity.EXTRA_WEB_VIEW_FRAGMENT)
+                );
             }
         });
     }
@@ -113,7 +125,22 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
                 imageView.setVisibility(View.VISIBLE);
                 Document document = Jsoup.parse(rssItem.getDescription());
                 String imageUrl = document.select("img").get(0).attr("src");
-                Picasso.with(mContext).load(imageUrl).into(imageView);
+                Picasso.with(mContext).load(imageUrl).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        DisplayUtil.scaleImage(bitmap, imageView, mContext);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
             } else {
                 imageView.setVisibility(View.GONE);
             }

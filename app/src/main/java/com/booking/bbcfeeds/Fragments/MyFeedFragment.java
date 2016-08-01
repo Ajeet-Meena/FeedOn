@@ -220,6 +220,7 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
         ((MainActivity) getActivity()).getToolbarActionImageView().setVisibility(View.GONE);
         ((MainActivity) getActivity()).getToolbarActionImageView().setOnClickListener(null);
         ((MainActivity) getActivity()).getToolbar().setTitle("My Feeds");
+        ((MainActivity) getActivity()).getToolbar().setSubtitle(null);
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(((BaseActivity) getActivity()).getContentView().getWindowToken(), 0);
     }
