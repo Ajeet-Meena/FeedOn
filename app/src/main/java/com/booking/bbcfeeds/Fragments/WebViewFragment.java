@@ -16,8 +16,6 @@ import com.booking.bbcfeeds.BaseClasses.BaseActivity;
 import com.booking.bbcfeeds.Models.RSSItem;
 import com.booking.bbcfeeds.R;
 
-import static com.booking.bbcfeeds.Fragments.FeedListFragment.TAG;
-
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link WebViewFragment#newInstance} factory method to

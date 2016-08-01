@@ -2,7 +2,6 @@ package com.booking.bbcfeeds.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
