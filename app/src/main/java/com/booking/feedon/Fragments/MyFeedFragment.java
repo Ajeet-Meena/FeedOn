@@ -28,6 +28,7 @@ import com.booking.feedon.Listeners.AppBarObserver;
 import com.booking.feedon.Models.RSSFeed;
 import com.booking.feedon.Models.WebSite;
 import com.booking.feedon.R;
+import com.booking.feedon.Utils.Connectivity;
 import com.booking.feedon.Utils.Constants;
 
 import java.util.ArrayList;
@@ -68,22 +69,26 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
     }
 
     private void loadDefaultWebsiteIfFirstLogin() {
-        if (getActivity()
-                .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
-                .getBoolean(IS_FIRST_LOGIN, true))
-            new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
-                @Override
-                public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
-                    for (RSSFeed rssFeed : rssFeeds) {
-                        addToDatabase(rssFeed.getWebSite());
-                        webSites.add(rssFeed.getWebSite());
+        if (Connectivity.isNetworkAvailable(getActivity())) {
+            if (getActivity()
+                    .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+                    .getBoolean(IS_FIRST_LOGIN, true))
+                new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
+                    @Override
+                    public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
+                        for (RSSFeed rssFeed : rssFeeds) {
+                            addToDatabase(rssFeed.getWebSite());
+                            webSites.add(rssFeed.getWebSite());
+                        }
+                        notifyRecyclerView();
+                        getActivity()
+                                .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+                                .edit().putBoolean(IS_FIRST_LOGIN, false).apply();
                     }
-                    notifyRecyclerView();
-                    getActivity()
-                            .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
-                            .edit().putBoolean(IS_FIRST_LOGIN, false).apply();
-                }
-            }, Constants.WEB_SITES_LIST).execute();
+                }, Constants.WEB_SITES_LIST).execute();
+        } else {
+            Toast.makeText(getActivity(), "Network Unavailable", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initView() {
