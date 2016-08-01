@@ -38,8 +38,8 @@ public class JsoupHelper extends ContextWrapper{
             @Override
             public void run() {
                 try {
-                    String documentString = new ApiURLConnection().httpGet(url,null);
-                    org.jsoup.nodes.Document doc = Jsoup.parse(documentString,"",Parser.xmlParser());
+                    String documentString = new ApiURLConnection().httpGet(url, null);
+                    org.jsoup.nodes.Document doc = Jsoup.parse(documentString, "", Parser.xmlParser());
                     org.jsoup.select.Elements links = doc
                             .select("link[type=application/rss+xml]");
                     if (links.size() > 0) {
@@ -66,14 +66,15 @@ public class JsoupHelper extends ContextWrapper{
         }).start();
     }
 
-    private void closeDialog(){
-        ((Activity)getBaseContext()).runOnUiThread(new Runnable() {
+    private void closeDialog() {
+        ((Activity) getBaseContext()).runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 progressDialog.dismiss();
             }
         });
     }
+
     public interface OnOperationComplete {
         void onOperationComplete(String result);
     }
@@ -82,13 +83,13 @@ public class JsoupHelper extends ContextWrapper{
         void onDocumentFetchComplete(Document document);
     }
 
-    public void getDocument(final String url, final OnDocumentFetchComplete onDocumentFetchComplete){
+    public void getDocument(final String url, final OnDocumentFetchComplete onDocumentFetchComplete) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                   String documentString =  new ApiURLConnection().httpGet(url,null);
-                    Document document = Jsoup.parse(documentString,"", Parser.xmlParser());
+                    String documentString = new ApiURLConnection().httpGet(url, null);
+                    Document document = Jsoup.parse(documentString, "", Parser.xmlParser());
                     onDocumentFetchComplete.onDocumentFetchComplete(document);
                     closeDialog();
                 } catch (Exception e) {
