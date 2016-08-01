@@ -110,6 +110,29 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
 
         private TextView title, discription;
         private ImageView imageView;
+        private Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
+                imageView.setVisibility(View.VISIBLE);
+                imageView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        DisplayUtil.scaleImage(bitmap, imageView, mContext);
+                    }
+                });
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                imageView.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+                imageView.setVisibility(View.GONE);
+            }
+        };
 
         public ItemViewHolder(View itemView) {
             super(itemView);
@@ -122,25 +145,9 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
             title.setText(Html.fromHtml(rssItem.getTitle()));
             discription.setText(Html.fromHtml(rssItem.getDescription()));
             if (rssItem.getDescription().contains("img")) {
-                imageView.setVisibility(View.VISIBLE);
                 Document document = Jsoup.parse(rssItem.getDescription());
                 String imageUrl = document.select("img").get(0).attr("src");
-                Picasso.with(mContext).load(imageUrl).into(new Target() {
-                    @Override
-                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        DisplayUtil.scaleImage(bitmap, imageView, mContext);
-                    }
-
-                    @Override
-                    public void onBitmapFailed(Drawable errorDrawable) {
-
-                    }
-
-                    @Override
-                    public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-                    }
-                });
+                Picasso.with(mContext).load(imageUrl).into(target);
             } else {
                 imageView.setVisibility(View.GONE);
             }

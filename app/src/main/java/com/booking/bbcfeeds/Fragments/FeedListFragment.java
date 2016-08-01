@@ -10,17 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.Adapters.FeedListAdapter;
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
 import com.booking.bbcfeeds.Database.RSSDatabaseHelper;
+import com.booking.bbcfeeds.Helpers.FeedHelper;
 import com.booking.bbcfeeds.Listeners.AppBarObserver;
 import com.booking.bbcfeeds.Models.RSSFeed;
 import com.booking.bbcfeeds.Models.RSSItem;
 import com.booking.bbcfeeds.Models.WebSite;
 import com.booking.bbcfeeds.R;
-import com.booking.bbcfeeds.RSSParser;
 
 import java.util.ArrayList;
 
@@ -72,7 +73,7 @@ public class FeedListFragment extends Fragment implements AppBarObserver.OnOffse
         }
     }
 
-    private void refereshRecyclerView(){
+    private void refereshRecyclerView() {
         feedListAdapter.setRssItems(rssItems);
         feedListAdapter.notifyDataSetChanged();
     }
@@ -103,23 +104,16 @@ public class FeedListFragment extends Fragment implements AppBarObserver.OnOffse
     }
 
     public void getRssItems() {
-        new RSSParser(getActivity()).getRSSFeedFromRSSLink(webSite.getRSSLink(),
-                new RSSParser.OnRSSFetchComplete() {
-                    @Override
-                    public void onRSSFetchComplete(RSSFeed rssFeed) {
-                        if(rssFeed!=null) {
-                            rssItems.clear();
-                            rssItems.addAll(rssFeed.getRssItems());
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    refereshRecyclerView();
-                                }
-                            });
-                        } else {
+        new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
+            @Override
+            public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
+                if (rssFeeds != null && !rssFeeds.isEmpty()) {
+                    rssItems.clear();
+                    rssItems.addAll(rssFeeds.get(0).getRssItems());
+                    refereshRecyclerView();
+                }
+            }
+        }, new String[]{webSite.getRSSLink()}).execute();
 
-                        }
-                    }
-                });
     }
 }

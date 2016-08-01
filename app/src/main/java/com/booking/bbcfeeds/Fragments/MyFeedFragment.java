@@ -23,12 +23,12 @@ import com.booking.bbcfeeds.Activity.MainActivity;
 import com.booking.bbcfeeds.Adapters.WebSiteRecyclerAdapter;
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
 import com.booking.bbcfeeds.Database.RSSDatabaseHelper;
-import com.booking.bbcfeeds.Helpers.JsoupHelper;
+import com.booking.bbcfeeds.Helpers.FeedHelper;
 import com.booking.bbcfeeds.Listeners.AppBarObserver;
 import com.booking.bbcfeeds.Models.RSSFeed;
 import com.booking.bbcfeeds.Models.WebSite;
 import com.booking.bbcfeeds.R;
-import com.booking.bbcfeeds.RSSParser;
+import com.booking.bbcfeeds.Utils.Constants;
 
 import java.util.ArrayList;
 
@@ -59,6 +59,16 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
             initVariables();
             initView();
             setupRecyclerView();
+            new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
+                @Override
+                public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
+                    for (RSSFeed rssFeed : rssFeeds) {
+                        addToDatabase(rssFeed.getWebSite());
+                        webSites.add(rssFeed.getWebSite());
+                    }
+                    notifyRecyclerView();
+                }
+            }, Constants.WEB_SITES_LIST).execute();
             return rootView;
         }
         return rootView;
@@ -107,72 +117,45 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
                             editTextUrl.setError(null);
                         } else {
                             String input;
-                            if(editTextRssLink.isFocused()){
+                            if (editTextRssLink.isFocused()) {
                                 input = editTextRssLink.getText().toString();
-                                new RSSParser(getActivity()).getRSSFeedFromRSSLink(input
-                                        , new RSSParser.OnRSSFetchComplete() {
-                                            @Override
-                                            public void onRSSFetchComplete(RSSFeed rssFeed) {
-                                                if (rssFeed == null) {
-                                                    getActivity().runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            Toast.makeText(getActivity(), "Either Inserted URL is wrong or it does not contain RSS Feed", Toast.LENGTH_SHORT).show();
-                                                        }
-                                                    });
-                                                } else {
-                                                    addToDatabase(rssFeed.getWebSite());
-                                                    getActivity().runOnUiThread(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            notifyRecyclerView();
-                                                        }
-                                                    });
-                                                }
-                                                dialog.dismiss();
-                                            }
-                                        });
-                            }else {
+                                new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
+                                    @Override
+                                    public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
+                                        if (rssFeeds == null || rssFeeds.isEmpty()) {
+                                            Toast.makeText(getActivity(), "Either Inserted URL is wrong or it does not contain RSS Feed", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            addToDatabase(rssFeeds.get(0).getWebSite());
+                                            notifyRecyclerView();
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                }, new String[]{input}).execute();
+
+                            } else {
                                 input = editTextUrl.getText().toString();
-                                new JsoupHelper(getActivity())
-                                        .getRSSLinkFromWebSiteURL(
-                                                input,
-                                                new JsoupHelper.OnOperationComplete() {
-                                                    @Override
-                                                    public void onOperationComplete(String result) {
-                                                        new RSSParser(getActivity()).getRSSFeedFromRSSLink(result
-                                                                , new RSSParser.OnRSSFetchComplete() {
-                                                                    @Override
-                                                                    public void onRSSFetchComplete(RSSFeed rssFeed) {
-                                                                        if (rssFeed == null) {
-                                                                            getActivity().runOnUiThread(new Runnable() {
-                                                                                @Override
-                                                                                public void run() {
-                                                                                    Toast.makeText(getActivity(), "Either Inserted URL is wrong or it does not contain RSS Feed", Toast.LENGTH_SHORT).show();
-                                                                                }
-                                                                            });
-                                                                        } else {
-                                                                            addToDatabase(rssFeed.getWebSite());
-                                                                            getActivity().runOnUiThread(new Runnable() {
-                                                                                @Override
-                                                                                public void run() {
-                                                                                    notifyRecyclerView();
-                                                                                }
-                                                                            });
-                                                                        }
-                                                                        dialog.dismiss();
-                                                                    }
-                                                                });
-                                                    }
-                                                }
-                                        );
+                                new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
+                                    @Override
+                                    public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
+                                        if (rssFeeds == null || rssFeeds.isEmpty()) {
+                                            Toast.makeText(getActivity(), "Either Inserted URL is wrong or it does not contain RSS Feed", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                                addToDatabase(rssFeeds.get(0).getWebSite());
+                                                notifyRecyclerView();
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                }, input).execute();
                             }
                         }
-
                     }
-                })
-                .autoDismiss(false).build();
-        materialDialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+                }).autoDismiss(false).build();
+
+        materialDialog.getWindow().
+
+                getAttributes()
+
+                .windowAnimations = R.style.MyAnimation_Window;
         materialDialog.show();
     }
 
