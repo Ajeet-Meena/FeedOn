@@ -47,6 +47,8 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
     private LinearLayout linearLayout;
     private ArrayList<WebSite> webSites = new ArrayList<>();
     private RSSDatabaseHelper databaseHelper;
+    private static final String IS_FIRST_LOGIN = "is_first_login";
+    private static final String SHARED_PREF = "shared_pref";
 
     public MyFeedFragment() {
     }
@@ -59,6 +61,16 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
             initVariables();
             initView();
             setupRecyclerView();
+            loadDefaultWebsiteIfFirstLogin();
+            return rootView;
+        }
+        return rootView;
+    }
+
+    private void loadDefaultWebsiteIfFirstLogin() {
+        if (getActivity()
+                .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+                .getBoolean(IS_FIRST_LOGIN, true))
             new FeedHelper(getActivity(), new FeedHelper.OnRssListFetchComplete() {
                 @Override
                 public void onRssListFetchComplete(ArrayList<RSSFeed> rssFeeds) {
@@ -67,11 +79,11 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
                         webSites.add(rssFeed.getWebSite());
                     }
                     notifyRecyclerView();
+                    getActivity()
+                            .getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+                            .edit().putBoolean(IS_FIRST_LOGIN, false).apply();
                 }
             }, Constants.WEB_SITES_LIST).execute();
-            return rootView;
-        }
-        return rootView;
     }
 
     private void initView() {
@@ -140,8 +152,8 @@ public class MyFeedFragment extends Fragment implements AppBarObserver.OnOffsetC
                                         if (rssFeeds == null || rssFeeds.isEmpty()) {
                                             Toast.makeText(getActivity(), "Either Inserted URL is wrong or it does not contain RSS Feed", Toast.LENGTH_SHORT).show();
                                         } else {
-                                                addToDatabase(rssFeeds.get(0).getWebSite());
-                                                notifyRecyclerView();
+                                            addToDatabase(rssFeeds.get(0).getWebSite());
+                                            notifyRecyclerView();
                                         }
                                         dialog.dismiss();
                                     }
