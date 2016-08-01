@@ -3,9 +3,9 @@
     <group android:id="@+id/grp1" android:checkableBehavior="single"/>
 
         <item
-            android:id="@+id/call_developer"
+            android:id="@+id/about"
             android:checked="false"
-            android:title="Call Developer" />
+            android:title="About" />
 
 
 </menu>

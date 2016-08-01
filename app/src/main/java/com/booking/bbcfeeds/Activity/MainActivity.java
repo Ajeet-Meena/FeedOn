@@ -18,6 +18,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
 import com.booking.bbcfeeds.Fragments.FeedListFragment;
 import com.booking.bbcfeeds.Fragments.MyFeedFragment;
@@ -85,7 +86,14 @@ public class MainActivity extends BaseActivity implements
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.call_developer: {
+            case R.id.about: {
+                MaterialDialog aboutDialog = new MaterialDialog.Builder(this)
+                        .title("About")
+                        .content("Add favourite feeds to database and read them within the app." +
+                                "\nDeveloped by: Ajeet Kumar Meena").positiveText("Ok")
+                        .build();
+                aboutDialog.getWindow().getAttributes().windowAnimations = R.style.MyAnimation_Window;
+                aboutDialog.show();
                 return true;
             }
         }
@@ -182,10 +190,10 @@ public class MainActivity extends BaseActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        int id = intent.getIntExtra(EXTRA_ATTACH_FRAGMENT_NO,0);
-        switch (id){
-            case EXTRA_FEED_LIST_FRAGMENT:{
-                attachDetailFragment(intent.getIntExtra(FeedListFragment.EXTRA_ID,-1));
+        int id = intent.getIntExtra(EXTRA_ATTACH_FRAGMENT_NO, 0);
+        switch (id) {
+            case EXTRA_FEED_LIST_FRAGMENT: {
+                attachDetailFragment(intent.getIntExtra(FeedListFragment.EXTRA_ID, -1));
                 break;
             }
             case EXTRA_WEB_VIEW_FRAGMENT: {
@@ -195,12 +203,12 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    private void attachDetailFragment(int id){
+    private void attachDetailFragment(int id) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frame, FeedListFragment.getInstance(id), FeedListFragment.TAG);
         fragmentTransaction.addToBackStack(FeedListFragment.TAG);
         fragmentTransaction.commit();
-        appBarLayout.setExpanded(true,true);
+        appBarLayout.setExpanded(true, true);
     }
 
     private void attachWebViewFragment(RSSItem rssItem) {
@@ -208,8 +216,7 @@ public class MainActivity extends BaseActivity implements
         fragmentTransaction.replace(R.id.frame, WebViewFragment.getInstance(rssItem), FeedListFragment.TAG);
         fragmentTransaction.addToBackStack(WebViewFragment.TAG);
         fragmentTransaction.commit();
-        appBarLayout.setExpanded(true,true);
-        ;
+        appBarLayout.setExpanded(true, true);
     }
 
     @Override
