@@ -108,13 +108,13 @@ public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
 
     private class ItemViewHolder extends ItemHolder {
 
-        private TextView title, notesTextView, webSiteLink;
+        private TextView title, discriptionTextView, webSiteLink;
         private ImageView delete, websiteLogo;
 
         public ItemViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
-            notesTextView = (TextView) itemView.findViewById(R.id.note);
+            discriptionTextView = (TextView) itemView.findViewById(R.id.discription);
             delete = (ImageView) itemView.findViewById(R.id.delete);
             websiteLogo = (ImageView) itemView.findViewById(R.id.website_logo);
             webSiteLink = (TextView) itemView.findViewById(R.id.website_link);
@@ -122,8 +122,18 @@ public class WebSiteRecyclerAdapter extends BaseRecyclerAdapter {
 
         public void setViews(WebSite webSite) {
             title.setText(webSite.getTitle());
-            notesTextView.setText(webSite.getDescription());
-            webSiteLink.setText(webSite.getLink());
+            if (webSite.getDescription() == null || webSite.getDescription().isEmpty()) {
+                discriptionTextView.setVisibility(View.GONE);
+            } else {
+                discriptionTextView.setVisibility(View.VISIBLE);
+                discriptionTextView.setText(webSite.getDescription());
+            }
+            if (webSite.getLink() == null || webSite.getLink().isEmpty()) {
+                webSiteLink.setVisibility(View.GONE);
+            } else {
+                webSiteLink.setVisibility(View.VISIBLE);
+                webSiteLink.setText(webSite.getLink());
+            }
             if (webSite.getWebSiteLogo() != null && !webSite.getWebSiteLogo().isEmpty()) {
                 websiteLogo.setVisibility(View.VISIBLE);
                 Picasso.with(mContext).load(webSite.getWebSiteLogo()).into(websiteLogo);

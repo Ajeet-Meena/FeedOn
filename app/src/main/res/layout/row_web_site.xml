@@ -67,7 +67,7 @@
     </LinearLayout>
 
     <com.booking.bbcfeeds.Views.MontserratTextView
-        android:id="@+id/note"
+        android:id="@+id/discription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
