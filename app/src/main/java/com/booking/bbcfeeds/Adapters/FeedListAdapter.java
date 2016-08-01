@@ -113,7 +113,6 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
         private Target target = new Target() {
             @Override
             public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                imageView.setVisibility(View.VISIBLE);
                 imageView.post(new Runnable() {
                     @Override
                     public void run() {
@@ -124,13 +123,11 @@ public class FeedListAdapter extends BaseRecyclerAdapter {
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-                imageView.setVisibility(View.GONE);
 
             }
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {
-                imageView.setVisibility(View.GONE);
             }
         };
 
