@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.booking.bbcfeeds.BaseClasses.BaseActivity;
 import com.booking.bbcfeeds.Fragments.FeedListFragment;
 import com.booking.bbcfeeds.Fragments.MyFeedFragment;
+import com.booking.bbcfeeds.Fragments.WebViewFragment;
 import com.booking.bbcfeeds.Listeners.OnFragmentInteractionListener;
+import com.booking.bbcfeeds.Models.RSSItem;
 import com.booking.bbcfeeds.R;
 
 /**
@@ -34,7 +36,8 @@ public class MainActivity extends BaseActivity implements
         FragmentManager.OnBackStackChangedListener {
 
     public static final String EXTRA_ATTACH_FRAGMENT_NO = "extra_attach_fragment_no";
-    public static final int EXTRA_DETTAIL_FRAGMENT = 2;
+    public static final int EXTRA_FEED_LIST_FRAGMENT = 2;
+    public static final int EXTRA_WEB_VIEW_FRAGMENT = 3;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -181,8 +184,13 @@ public class MainActivity extends BaseActivity implements
         super.onNewIntent(intent);
         int id = intent.getIntExtra(EXTRA_ATTACH_FRAGMENT_NO,0);
         switch (id){
-            case EXTRA_DETTAIL_FRAGMENT:{
+            case EXTRA_FEED_LIST_FRAGMENT:{
                 attachDetailFragment(intent.getIntExtra(FeedListFragment.EXTRA_ID,-1));
+                break;
+            }
+            case EXTRA_WEB_VIEW_FRAGMENT: {
+                attachWebViewFragment((RSSItem) intent.getParcelableExtra(WebViewFragment.EXTRA_RSS_ITEM));
+                break;
             }
         }
     }
@@ -192,6 +200,16 @@ public class MainActivity extends BaseActivity implements
         fragmentTransaction.replace(R.id.frame, FeedListFragment.getInstance(id), FeedListFragment.TAG);
         fragmentTransaction.addToBackStack(FeedListFragment.TAG);
         fragmentTransaction.commit();
+        appBarLayout.setExpanded(true,true);
+    }
+
+    private void attachWebViewFragment(RSSItem rssItem) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frame, WebViewFragment.getInstance(rssItem), FeedListFragment.TAG);
+        fragmentTransaction.addToBackStack(WebViewFragment.TAG);
+        fragmentTransaction.commit();
+        appBarLayout.setExpanded(true,true);
+        ;
     }
 
     @Override
